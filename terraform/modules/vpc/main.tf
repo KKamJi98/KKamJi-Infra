@@ -31,8 +31,8 @@ resource "aws_subnet" "public" {
   map_public_ip_on_launch = var.map_public_ip_on_launch
   tags = merge(
     {
-    Name                     = "${var.public_subnet_suffix}-${each.key + 1}"
-    # "kubernetes.io/role/elb" = "1"
+      Name                     = "${var.public_subnet_suffix}-${each.key + 1}"
+      "kubernetes.io/role/elb" = "1"
     },
   )
 }
@@ -45,7 +45,7 @@ resource "aws_subnet" "private" {
   tags = {
     Name                     = "${var.private_subnet_suffix}-${each.key + 1}"
     "kubernetes.io/role/elb" = "1"
-    "karpenter.sh/discovery" = "kkamji-app"
+    "karpenter.sh/discovery" = "kkamji-eks"
   }
 }
 
@@ -72,7 +72,7 @@ resource "aws_internet_gateway" "this" {
 resource "aws_nat_gateway" "this" {
   allocation_id = aws_eip.nat.id
   subnet_id     = values(aws_subnet.public)[0].id # 첫 번째 퍼블릭 서브넷에 NAT Gateway 생성
-  
+
   tags = {
     Name = "${var.name}-nat-gateway"
   }
@@ -102,7 +102,7 @@ resource "aws_route_table" "private" {
 
   route {
     cidr_block     = "0.0.0.0/0"
-    gateway_id  = aws_nat_gateway.this.id
+    nat_gateway_id = aws_nat_gateway.this.id
   }
 
   tags = {

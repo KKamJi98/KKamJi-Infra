@@ -20,11 +20,6 @@ terraform {
   }
 }
 
-module "ecr" {
-  source = "../modules/ecr"
-  name   = "kkamji-app-backend"
-}
-
 module "vpc" {
   source                  = "../modules/vpc"
   name                    = "kkamji-app"
@@ -38,4 +33,32 @@ module "vpc" {
   map_public_ip_on_launch = true
   enable_dns_support      = true
   enable_dns_hostnames    = true
+}
+
+module "ecr" {
+  source = "../modules/ecr"
+  name   = "kkamji-app-backend"
+}
+
+module "eks" {
+  source                   = "../modules/eks"
+  cluster_name             = "kkamji-eks"
+  cluster_version          = "1.31"
+  vpc_id                   = module.vpc.vpc_id
+  subnet_ids               = module.vpc.private_subnet_ids
+  control_plane_subnet_ids = module.vpc.public_subnet_ids
+  instance_types           = ["t3.medium"]
+  min_size                 = 1
+  max_size                 = 3
+  desired_size             = 1
+  key_name                 = "KKamJi2024"
+  user_data = base64encode(templatefile("../templates/user_data.sh", {
+    cluster_name = "kkamji-eks"
+    max_pods     = 110
+  }))
+}
+
+resource "aws_iam_role_policy_attachment" "ebs_csi_policy_attachment" {
+  role       = module.eks.eks_node_group_iam_role_name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
 }
