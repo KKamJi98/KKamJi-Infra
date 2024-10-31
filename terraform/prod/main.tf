@@ -62,3 +62,20 @@ resource "aws_iam_role_policy_attachment" "ebs_csi_policy_attachment" {
   role       = module.eks.eks_node_group_iam_role_name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
 }
+
+resource "aws_iam_role_policy_attachment" "ssm_role" {
+  role       = module.eks.eks_node_group_iam_role_name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+}
+
+module "aws_load_balancer_controller_policy" {
+  source = "../modules/iam_policy"
+  name   = "AWSLoadBalancerControllerPolicy"
+  policy_file = "../templates/lb_controller_policy.json"
+}
+
+module "eks_backend_pod_policy" {
+  source = "../modules/iam_policy"
+  name = "KKamJiBackendPodPolicy"
+  policy_file = "../templates/backend_pod_policy.json"
+}

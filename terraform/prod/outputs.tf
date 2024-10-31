@@ -20,3 +20,13 @@ output "cluster_arn" {
   description = "The ARN of the EKS cluster"
   value       = module.eks.cluster_arn
 }
+
+output "lb_controller_policy_arn" {
+  description = "The ARN of the policy"
+  value       = module.aws_load_balancer_controller_policy.policy_arn
+}
+
+output "backend_pod_policy_arn"{
+  description = "The ARN of the backend pod policy"
+  value = module.eks_backend_pod_policy.policy_arn
+}
