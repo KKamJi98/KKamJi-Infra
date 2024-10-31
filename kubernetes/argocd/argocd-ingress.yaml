@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: argocd-ingress
+  namespace: argocd
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing # ALB를 인터넷에 노출
+    alb.ingress.kubernetes.io/target-type: ip # ALB가 IP 모드로 동작하도록 설정 (ip -> 트래픽을 Pod IP로 직접 라우팅)
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80}, {"HTTPS":443}]'
+    alb.ingress.kubernetes.io/healthcheck-protocol: HTTPS
+    alb.ingress.kubernetes.io/actions.ssl-redirect: '{"Type": "redirect", "RedirectConfig": { "Protocol": "HTTPS", "Port": "443", "StatusCode": "HTTP_301"}}'
+    alb.ingress.kubernetes.io/backend-protocol: HTTPS 
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-northeast-2:376129852049:certificate/f378e099-bc89-41ff-b393-9536ffec23ba # HTTPS에 사용할 인증서의 ARN을 지정
+    alb.ingress.kubernetes.io/group.name: "kkamji-app"
+spec:
+  ingressClassName: alb
+  rules:
+    - host: kkamji-app-argocd.kkamji.net
+      http:
+        paths:
+          - path: /*
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: argocd-server
+                port:
+                  number: 443
