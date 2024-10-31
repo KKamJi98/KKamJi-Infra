@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: backend
+  name: backend
+  namespace: backend
+spec:
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      serviceAccountName: kkamji-eks-backend-pod-sa
+      containers:
+      - image: 376129852049.dkr.ecr.ap-northeast-2.amazonaws.com/kkamji-app-backend:latest
+        name: backend
+        resources:
+          requests:
+            cpu: "125m"
+            memory: "512Mi"
+          limits:
+            cpu: "250m"
+            memory: "1Gi"
