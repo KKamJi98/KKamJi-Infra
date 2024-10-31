@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: aws-cli-pod
+  namespace: backend
+spec:
+  serviceAccountName: kkamji-eks-backend-pod-sa
+  containers:
+  - name: aws-cli-container
+    image: amazon/aws-cli:2.0.30
+    command: ["/bin/bash", "-c", "while true; do sleep infinity; done;"]
