@@ -372,7 +372,7 @@ metadata:
     app.kubernetes.io/version: "1.0.6"
     app.kubernetes.io/managed-by: Helm
 spec:
-  replicas: 2
+  replicas: 1
   revisionHistoryLimit: 10
   strategy:
     rollingUpdate:
