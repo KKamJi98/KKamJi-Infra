@@ -5,7 +5,7 @@ fullnameOverride: ""
 backend:
   image:
     repository: 376129852049.dkr.ecr.ap-northeast-2.amazonaws.com/kkamji-app-backend
-    tag: 2.0
+    tag: "3.0"
     pullPolicy: IfNotPresent
   service:
     type: ClusterIP
@@ -25,7 +25,7 @@ backend:
 mysql:
   image:
     repository: mysql
-    tag: "5.7"
+    tag: "8"
     pullPolicy: IfNotPresent
   service:
     type: ClusterIP
