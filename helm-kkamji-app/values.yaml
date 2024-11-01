@@ -36,6 +36,6 @@ mysql:
     storageClass: gp3
   auth:
     rootPassword: testrootpassword
-    username: testuser1234
+    username: testuser
     password: testpassword1234
     database: kkamji_app
