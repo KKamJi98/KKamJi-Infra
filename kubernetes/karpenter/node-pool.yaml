@@ -54,6 +54,8 @@ spec:
     # - id: ami-0a5ea0cf3491c9ec9
   kubelet:
     maxPods: 110
+
+  # AL2 userData setting
   # userData: |
   #   #!/bin/bash
   #   set -o xtrace
