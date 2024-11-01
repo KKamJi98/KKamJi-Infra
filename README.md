@@ -46,13 +46,106 @@ karpenter                       karpenter                       1               
 kkamji-app                      helm-managed-kkamji-app         1               2024-11-02 05:10:48.26394829 +0900 KST  deployed        kkamji-app-0.1.0                        1.16.0     
 ```
 
-##TODO ArgoCD 구성 이미지
+## ArgoCD **구성**
 
-##TODO Monitoring
+### API-Server
 
-##TODO WAF
+![alt text](docs/api-server-argocd.png)
 
-##TODO 부하테스트 - karpenter 노드 프로비저닝 확인
+### ArgoCD
+
+![alt text](docs/database-argocd.png)
+
+## Monitoring
+
+EKS Add-on Amazon CloudWatch Observability 사용
+전체, 노드, 네임스페이스, 서비스 각각의 리소스 지표 모니터링 가능
+
+### Node별 리소스 확인
+
+![alt text](docs/node-metric.png)
+
+### Namespace별 리소스 확인
+
+![alt text](docs/namespace-metric.png)
+
+## WAF
+
+![alt text](docs/waf.png)
+
+## 부하테스트 - karpenter 노드 프로비저닝 확인
+
+### 로드 전
+
+```bash
+❯ k get nodes
+NAME                                               STATUS   ROLES    AGE     VERSION
+ip-10-10-210-62.ap-northeast-2.compute.internal    Ready    <none>   5h12m   v1.31.0-eks-a737599
+ip-10-10-220-15.ap-northeast-2.compute.internal    Ready    <none>   7m26s   v1.31.0-eks-a737599
+❯ k top nodes
+NAME                                               CPU(cores)   CPU%   MEMORY(bytes)   MEMORY%   
+ip-10-10-210-62.ap-northeast-2.compute.internal    1542m        79%    2043Mi          62%       
+ip-10-10-220-15.ap-northeast-2.compute.internal    1346m        69%    2109Mi          64% 
+```
+
+### 로드 후
+
+```bash
+❯ k get nodes
+NAME                                               STATUS   ROLES    AGE     VERSION
+ip-10-10-210-100.ap-northeast-2.compute.internal   Ready    <none>   5m12s   v1.31.0-eks-a737599
+ip-10-10-210-62.ap-northeast-2.compute.internal    Ready    <none>   5h20m   v1.31.0-eks-a737599
+ip-10-10-220-15.ap-northeast-2.compute.internal    Ready    <none>   15m     v1.31.0-eks-a737599
+
+❯ k top nodes
+NAME                                               CPU(cores)   CPU%   MEMORY(bytes)   MEMORY%   
+ip-10-10-210-100.ap-northeast-2.compute.internal   325m         16%    909Mi           27%       
+ip-10-10-210-62.ap-northeast-2.compute.internal    1821m        94%    1558Mi          47%       
+ip-10-10-220-15.ap-northeast-2.compute.internal    1930m        100%   2616Mi          79% 
+```
+
+### 시나리오
+
+> 1. busybox 이미지에서 wget을 사용해 부하 발생
+> 2. 부하로 인해 backend-hpa가 pod의 수를 증가시킴  
+> 3. resource limit으로 인해 pod가 pending 상태에 빠짐  
+> 4. Karpenter가 부족한 리소스, pod 개수 계산  
+> 5. NodeClaim으로 node provisioning  
+
+```bash
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: load-generator
+  namespace: backend
+spec:
+  replicas: 10
+  selector:
+    matchLabels:
+      app: load-generator
+  template:
+    metadata:
+      labels:
+        app: load-generator
+    spec:
+      containers:
+      - name: load-generator-container
+        image: busybox:1.28
+        command: ["/bin/sh", "-c", "while true; do wget -q -O- http://backend-service.backend.svc.cluster.local:8787/docs & sleep 0.01; done"]
+```
+
+### Karpenter log
+
+```bash
+k logs -n karpenter {karpenter-pod-name} -f
+~~~
+~~~
+~~~
+{"level":"INFO","time":"2024-11-01T23:20:17.787Z","logger":"controller","message":"created nodeclaim","commit":"901a5dc","controller":"provisioner","namespace":"","name":"","reconcileID":"592dacdc-b137-4e25-840d-4aad57f99988","NodePool":{"name":"default"},"NodeClaim":{"name":"default-n6j4c"},"requests":{"cpu":"730m","memory":"1297Mi","pods":"8"},"instance-types":"t4g.medium"}
+{"level":"INFO","time":"2024-11-01T23:20:20.602Z","logger":"controller","message":"launched nodeclaim","commit":"901a5dc","controller":"nodeclaim.lifecycle","controllerGroup":"karpenter.sh","controllerKind":"NodeClaim","NodeClaim":{"name":"default-n6j4c"},"namespace":"","name":"default-n6j4c","reconcileID":"3d55977e-ad31-45b5-998e-563702271e81","provider-id":"aws:///ap-northeast-2b/i-0e3dc8574c03b08a5","instance-type":"t4g.medium","zone":"ap-northeast-2b","capacity-type":"on-demand","allocatable":{"cpu":"1930m","ephemeral-storage":"17Gi","memory":"3187Mi","pods":"110"}}
+{"level":"INFO","time":"2024-11-01T23:20:47.530Z","logger":"controller","message":"registered nodeclaim","commit":"901a5dc","controller":"nodeclaim.lifecycle","controllerGroup":"karpenter.sh","controllerKind":"NodeClaim","NodeClaim":{"name":"default-n6j4c"},"namespace":"","name":"default-n6j4c","reconcileID":"b32294f7-4c9b-4c8e-a11f-7118b6419d66","provider-id":"aws:///ap-northeast-2b/i-0e3dc8574c03b08a5","Node":{"name":"ip-10-10-210-100.ap-northeast-2.compute.internal"}}
+{"level":"INFO","time":"2024-11-01T23:21:08.861Z","logger":"controller","message":"initialized nodeclaim","commit":"901a5dc","controller":"nodeclaim.lifecycle","controllerGroup":"karpenter.sh","controllerKind":"NodeClaim","NodeClaim":{"name":"default-n6j4c"},"namespace":"","name":"default-n6j4c","reconcileID":"3e57cf1c-7183-4694-b06f-483ff35a7e41","provider-id":"aws:///ap-northeast-2b/i-0e3dc8574c03b08a5","Node":{"name":"ip-10-10-210-100.ap-northeast-2.compute.internal"},"allocatable":{"cpu":"1930m","ephemeral-storage":"18182813665","hugepages-1Gi":"0","hugepages-2Mi":"0","hugepages-32Mi":"0","hugepages-64Ki":"0","memory":"3373212Ki","pods":"110"}}
+```
 
 ## Secrets 관리
 
@@ -151,4 +244,3 @@ kkamji-app                      helm-managed-kkamji-app         1               
 │   ├── terraform.tfstate
 │   └── versions.tf
 ```
-
