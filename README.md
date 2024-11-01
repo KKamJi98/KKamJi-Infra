@@ -6,9 +6,7 @@ Terraform을 통한 AWS Infra 프로비저닝
 
 - [AWS Architecture](architecture/architecture.png)
 
-## Internal EKS Architecture
-
-## TODO List
+## 구축 완료 보고
 
 - [x] S3, DynamoDB 백엔드 구성
 - [x] ECR 생성
@@ -25,4 +23,6 @@ Terraform을 통한 AWS Infra 프로비저닝
 - [x] ArgoCD 구성
 - [x] Helm Chart 구성
 - [x] WAF 구성
-- [ ] Prometheus, Grafana 연동
+- [x] Monitoring -> CloudWatch Container Insight
+
+## 파일 디렉토리 구조

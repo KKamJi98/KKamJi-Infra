@@ -55,4 +55,4 @@ spec:
     #!/bin/bash
     set -o xtrace
     /etc/eks/bootstrap.sh kkamji-eks \
-      --kubelet-extra-args '--max-pods=110'
+      --kubelet-extra-args '--max-pods=110 --register-with-taints=karpenter.sh/unregistered=true:NoSchedule'

@@ -58,14 +58,19 @@ module "eks" {
   }))
 }
 
-resource "aws_iam_role_policy_attachment" "ebs_csi_policy_attachment" {
+resource "aws_iam_role_policy_attachment" "ebs_csi_policy" {
   role       = module.eks.eks_node_group_iam_role_name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
 }
 
-resource "aws_iam_role_policy_attachment" "ssm_role" {
+resource "aws_iam_role_policy_attachment" "ssm_policy" {
   role       = module.eks.eks_node_group_iam_role_name
   policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+}
+
+resource "aws_iam_role_policy_attachment" "cloudwatch_agent_role" {
+  role       = module.eks.eks_node_group_iam_role_name
+  policy_arn = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
 }
 
 module "aws_load_balancer_controller_policy" {
@@ -79,6 +84,7 @@ module "eks_backend_pod_policy" {
   name        = "KKamJiBackendPodPolicy"
   policy_file = "../templates/backend_pod_policy.json"
 }
+
 
 module "waf" {
   source      = "../modules/waf"

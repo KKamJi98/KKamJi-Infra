@@ -13,6 +13,7 @@ module "eks" {
     kube-proxy             = {}
     vpc-cni                = {}
     aws-ebs-csi-driver     = {}
+    amazon-cloudwatch-observability = {}
   }
 
   vpc_id                   = var.vpc_id
@@ -46,3 +47,4 @@ module "eks" {
     "karpenter.sh/discovery" = "kkamji-eks"
   }
 }
+
