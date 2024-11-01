@@ -42,18 +42,18 @@ module "ecr" {
 
 module "eks" {
   source                   = "../modules/eks"
-  cluster_name             = "kkamji-eks"
+  cluster_name             = "kkamji"
   cluster_version          = "1.31"
   vpc_id                   = module.vpc.vpc_id
   subnet_ids               = module.vpc.private_subnet_ids
   control_plane_subnet_ids = module.vpc.public_subnet_ids
-  instance_types           = ["t3.medium"]
+  instance_types           = ["t4g.medium"]
   min_size                 = 1
   max_size                 = 3
   desired_size             = 1
   key_name                 = "KKamJi2024"
   user_data = base64encode(templatefile("../templates/user_data.sh", {
-    cluster_name = "kkamji-eks"
+    cluster_name = "kkamji"
     max_pods     = 110
   }))
 }
@@ -84,7 +84,6 @@ module "eks_backend_pod_policy" {
   name        = "KKamJiBackendPodPolicy"
   policy_file = "../templates/backend_pod_policy.json"
 }
-
 
 module "waf" {
   source      = "../modules/waf"
