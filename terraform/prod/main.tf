@@ -81,8 +81,8 @@ module "eks_backend_pod_policy" {
 }
 
 module "waf" {
-  source       = "../modules/waf"
-  name         = "kkamji-app-waf"
-  scope        = "REGIONAL"
-  metric_name  = "kkamji-app-waf-metric"
+  source      = "../modules/waf"
+  name        = "kkamji-app-waf"
+  scope       = "REGIONAL"
+  metric_name = "kkamji-app-waf-metric"
 }
