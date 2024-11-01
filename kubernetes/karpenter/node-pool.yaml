@@ -52,8 +52,11 @@ spec:
     # - id: ami-00c812cedaebebe05
     - id: ami-0cb3c3c2687bc0fbb
     # - id: ami-0a5ea0cf3491c9ec9
-  userData: |
-    #!/bin/bash
-    set -o xtrace
-    /etc/eks/bootstrap.sh kkamji-eks \
-      --kubelet-extra-args '--max-pods=110'
+  kubelet:
+    maxPods: 110
+  # userData: |
+  #   #!/bin/bash
+  #   set -o xtrace
+  #   /etc/eks/bootstrap.sh kkamji \
+  #     --use-max-pods false \
+  #     --kubelet-extra-args '--max-pods=110'
