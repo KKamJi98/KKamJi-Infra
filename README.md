@@ -38,6 +38,12 @@ helm install kkamji-app . -n helm-managed-kkamji-app --create-namespace \
   --set mysql.storage.storageClass={storageclass_name}
 
 ## mysql.storage.storageClass를 미지정 했을시 gp3라는 이름의 storage class가 존재해야함
+
+❯ helm list -A
+hNAME                           NAMESPACE                       REVISION        UPDATED                                 STATUS          CHART                                   APP VERSION
+aws-load-balancer-controller    kube-system                     1               2024-11-02 02:47:53.310076158 +0900 KST deployed        aws-load-balancer-controller-1.9.2      v2.9.2     
+karpenter                       karpenter                       1               2024-11-02 03:03:15.926017767 +0900 KST deployed        karpenter-1.0.7                         1.0.7      
+kkamji-app                      helm-managed-kkamji-app         1               2024-11-02 05:10:48.26394829 +0900 KST  deployed        kkamji-app-0.1.0                        1.16.0     
 ```
 
 ##TODO ArgoCD 구성 이미지
