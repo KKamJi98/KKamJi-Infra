@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: curl-load-test
+  name: load-generator
   namespace: backend
 spec:
-  replicas: 1
+  replicas: 10
   selector:
     matchLabels:
-      app: curl-load-test
+      app: load-generator
   template:
     metadata:
       labels:
-        app: curl-load-test
+        app: load-generator
     spec:
       containers:
-      - name: curl-container
-        image: amazon/aws-cli:2.0.30
-        command: ["/bin/bash", "-c", "while true; do for i in {1..10}; do curl -X GET http://backend-service.backend.svc.cluster.local:8787 & done; wait; sleep 0.1; done;"]
+      - name: load-generator-container
+        image: busybox:1.28
+        command: ["/bin/sh", "-c", "while true; do wget -q -O- http://backend-service.backend.svc.cluster.local:8787/docs & sleep 0.01; done"]
