@@ -25,3 +25,10 @@ spec:
                 name: argocd-server
                 port:
                   number: 443
+          - path: /*
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: ssl-redirect
+                port:
+                  name: use-annotation

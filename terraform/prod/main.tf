@@ -69,13 +69,20 @@ resource "aws_iam_role_policy_attachment" "ssm_role" {
 }
 
 module "aws_load_balancer_controller_policy" {
-  source = "../modules/iam_policy"
-  name   = "AWSLoadBalancerControllerPolicy"
+  source      = "../modules/iam_policy"
+  name        = "AWSLoadBalancerControllerPolicy"
   policy_file = "../templates/lb_controller_policy.json"
 }
 
 module "eks_backend_pod_policy" {
-  source = "../modules/iam_policy"
-  name = "KKamJiBackendPodPolicy"
+  source      = "../modules/iam_policy"
+  name        = "KKamJiBackendPodPolicy"
   policy_file = "../templates/backend_pod_policy.json"
+}
+
+module "waf" {
+  source       = "../modules/waf"
+  name         = "kkamji-app-waf"
+  scope        = "REGIONAL"
+  metric_name  = "kkamji-app-waf-metric"
 }

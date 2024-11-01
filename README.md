@@ -20,12 +20,9 @@ Terraform을 통한 AWS Infra 프로비저닝
 - [x] Secrets Manager에 API 서버 환경변수 추가
 - [x] Route53 LB 연동
 - [x] LB TLS 인증
-- [x] karpenter 세팅
-- [x] HPA 세팅
-- [ ] WAF 세팅
-- [ ] Helm Chart 구성
-- [ ] 
-
-## Hope
-
-base64 인코딩 할 때 무조건 -n 옵션을 붙혀 개행문자 없애기
+- [x] karpenter 구성
+- [x] HPA 구성
+- [x] ArgoCD 구성
+- [x] Helm Chart 구성
+- [x] WAF 구성
+- [ ] Prometheus, Grafana 연동
