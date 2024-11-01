@@ -4,7 +4,7 @@ Terraform을 통한 AWS Infra 프로비저닝
 
 ## AWS Infra Architecture
 
-- [AWS Architecture](architecture/architecture.webp)
+![AWS Architecture](architecture/architecture.webp)
 
 ## 구축 완료 보고
 
@@ -106,11 +106,11 @@ ip-10-10-220-15.ap-northeast-2.compute.internal    1930m        100%   2616Mi   
 
 ### 시나리오
 
-> 1. busybox 이미지에서 wget을 사용해 부하 발생
-> 2. 부하로 인해 backend-hpa가 pod의 수를 증가시킴  
-> 3. resource limit으로 인해 pod가 pending 상태에 빠짐  
-> 4. Karpenter가 부족한 리소스, pod 개수 계산  
-> 5. NodeClaim으로 node provisioning  
+1. busybox 이미지에서 wget을 사용해 부하 발생
+2. 부하로 인해 backend-hpa가 pod의 수를 증가시킴  
+3. resource limit으로 인해 pod가 pending 상태에 빠짐  
+4. Karpenter가 부족한 리소스, pod 개수 계산  
+5. NodeClaim으로 node provisioning  
 
 ```bash
 apiVersion: apps/v1
