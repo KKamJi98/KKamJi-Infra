@@ -16,7 +16,7 @@ spec:
     spec:
       serviceAccountName: kkamji-eks-backend-pod-sa
       containers:
-      - image: 376129852049.dkr.ecr.ap-northeast-2.amazonaws.com/kkamji-app-backend:1.0
+      - image: 376129852049.dkr.ecr.ap-northeast-2.amazonaws.com/kkamji-app-backend:2.0
         name: backend
         env:
         - name: USE_AWS_SECRETS

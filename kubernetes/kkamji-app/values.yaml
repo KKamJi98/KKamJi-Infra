@@ -5,7 +5,7 @@ fullnameOverride: ""
 backend:
   image:
     repository: 376129852049.dkr.ecr.ap-northeast-2.amazonaws.com/kkamji-app-backend
-    tag: latest
+    tag: 2.0
     pullPolicy: IfNotPresent
   service:
     type: ClusterIP
