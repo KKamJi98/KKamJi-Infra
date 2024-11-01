@@ -6,14 +6,14 @@ metadata:
   annotations:
     alb.ingress.kubernetes.io/scheme: internet-facing # ALB를 인터넷에 노출
     alb.ingress.kubernetes.io/target-type: ip # ALB가 IP 모드로 동작하도록 설정 (ip -> 트래픽을 Pod IP로 직접 라우팅)
-    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]' 
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80}, {"HTTPS":443}]' 
     alb.ingress.kubernetes.io/healthcheck-protocol: HTTP 
     alb.ingress.kubernetes.io/healthcheck-path: /healthz
+    alb.ingress.kubernetes.io/success-codes: "200"
     alb.ingress.kubernetes.io/healthcheck-port: traffic-port 
     alb.ingress.kubernetes.io/backend-protocol: HTTP
-    # alb.ingress.kubernetes.io/actions.ssl-redirect: '{"Type": "redirect", "RedirectConfig": { "Protocol": "HTTPS", "Port": "443", "StatusCode": "HTTP_301"}}'
+    alb.ingress.kubernetes.io/actions.ssl-redirect: '{"Type": "redirect", "RedirectConfig": { "Protocol": "HTTPS", "Port": "443", "StatusCode": "HTTP_301"}}'
     alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-northeast-2:376129852049:certificate/f378e099-bc89-41ff-b393-9536ffec23ba 
-    alb.ingress.kubernetes.io/success-codes: "200"
 spec:
   ingressClassName: alb
   rules:
@@ -26,7 +26,7 @@ spec:
               service:
                 name: backend-service
                 port:
-                  number: 8080
+                  number: 8787
           # - path: /*
           #   pathType: ImplementationSpecific
           #   backend:

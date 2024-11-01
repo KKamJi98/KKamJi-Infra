@@ -4,12 +4,12 @@ apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
   name: karpenter
-  namespace: kube-system
+  namespace: karpenter
   labels:
-    helm.sh/chart: karpenter-1.0.6
+    helm.sh/chart: karpenter-1.0.7
     app.kubernetes.io/name: karpenter
     app.kubernetes.io/instance: karpenter
-    app.kubernetes.io/version: "1.0.6"
+    app.kubernetes.io/version: "1.0.7"
     app.kubernetes.io/managed-by: Helm
 spec:
   maxUnavailable: 1
@@ -23,27 +23,27 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: karpenter
-  namespace: kube-system
+  namespace: karpenter
   labels:
-    helm.sh/chart: karpenter-1.0.6
+    helm.sh/chart: karpenter-1.0.7
     app.kubernetes.io/name: karpenter
     app.kubernetes.io/instance: karpenter
-    app.kubernetes.io/version: "1.0.6"
+    app.kubernetes.io/version: "1.0.7"
     app.kubernetes.io/managed-by: Helm
   annotations:
-    eks.amazonaws.com/role-arn: arn:aws:iam::376129852049:role/KarpenterControllerRole-kkamji-eks
+    eks.amazonaws.com/role-arn: arn:aws:iam::376129852049:role/KarpenterControllerRole-kkamji
 ---
 # Source: karpenter/templates/secret-webhook-cert.yaml
 apiVersion: v1
 kind: Secret
 metadata:
   name: karpenter-cert
-  namespace: kube-system
+  namespace: karpenter
   labels:
-    helm.sh/chart: karpenter-1.0.6
+    helm.sh/chart: karpenter-1.0.7
     app.kubernetes.io/name: karpenter
     app.kubernetes.io/instance: karpenter
-    app.kubernetes.io/version: "1.0.6"
+    app.kubernetes.io/version: "1.0.7"
     app.kubernetes.io/managed-by: Helm
 # data: {} # Injected by karpenter-webhook
 ---
@@ -54,10 +54,10 @@ metadata:
   name: karpenter-admin
   labels:
     rbac.authorization.k8s.io/aggregate-to-admin: "true"
-    helm.sh/chart: karpenter-1.0.6
+    helm.sh/chart: karpenter-1.0.7
     app.kubernetes.io/name: karpenter
     app.kubernetes.io/instance: karpenter
-    app.kubernetes.io/version: "1.0.6"
+    app.kubernetes.io/version: "1.0.7"
     app.kubernetes.io/managed-by: Helm
 rules:
   - apiGroups: ["karpenter.sh"]
@@ -73,10 +73,10 @@ kind: ClusterRole
 metadata:
   name: karpenter-core
   labels:
-    helm.sh/chart: karpenter-1.0.6
+    helm.sh/chart: karpenter-1.0.7
     app.kubernetes.io/name: karpenter
     app.kubernetes.io/instance: karpenter
-    app.kubernetes.io/version: "1.0.6"
+    app.kubernetes.io/version: "1.0.7"
     app.kubernetes.io/managed-by: Helm
 rules:
   # Read
@@ -132,10 +132,10 @@ kind: ClusterRole
 metadata:
   name: karpenter
   labels:
-    helm.sh/chart: karpenter-1.0.6
+    helm.sh/chart: karpenter-1.0.7
     app.kubernetes.io/name: karpenter
     app.kubernetes.io/instance: karpenter
-    app.kubernetes.io/version: "1.0.6"
+    app.kubernetes.io/version: "1.0.7"
     app.kubernetes.io/managed-by: Helm
 rules:
   # Read
@@ -153,10 +153,10 @@ kind: ClusterRoleBinding
 metadata:
   name: karpenter-core
   labels:
-    helm.sh/chart: karpenter-1.0.6
+    helm.sh/chart: karpenter-1.0.7
     app.kubernetes.io/name: karpenter
     app.kubernetes.io/instance: karpenter
-    app.kubernetes.io/version: "1.0.6"
+    app.kubernetes.io/version: "1.0.7"
     app.kubernetes.io/managed-by: Helm
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -165,7 +165,7 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: karpenter
-    namespace: kube-system
+    namespace: karpenter
 ---
 # Source: karpenter/templates/clusterrole.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -173,10 +173,10 @@ kind: ClusterRoleBinding
 metadata:
   name: karpenter
   labels:
-    helm.sh/chart: karpenter-1.0.6
+    helm.sh/chart: karpenter-1.0.7
     app.kubernetes.io/name: karpenter
     app.kubernetes.io/instance: karpenter
-    app.kubernetes.io/version: "1.0.6"
+    app.kubernetes.io/version: "1.0.7"
     app.kubernetes.io/managed-by: Helm
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -185,19 +185,19 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: karpenter
-    namespace: kube-system
+    namespace: karpenter
 ---
 # Source: karpenter/templates/role.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: karpenter
-  namespace: kube-system
+  namespace: karpenter
   labels:
-    helm.sh/chart: karpenter-1.0.6
+    helm.sh/chart: karpenter-1.0.7
     app.kubernetes.io/name: karpenter
     app.kubernetes.io/instance: karpenter
-    app.kubernetes.io/version: "1.0.6"
+    app.kubernetes.io/version: "1.0.7"
     app.kubernetes.io/managed-by: Helm
 rules:
   # Read
@@ -231,10 +231,10 @@ metadata:
   name: karpenter-dns
   namespace: kube-system
   labels:
-    helm.sh/chart: karpenter-1.0.6
+    helm.sh/chart: karpenter-1.0.7
     app.kubernetes.io/name: karpenter
     app.kubernetes.io/instance: karpenter
-    app.kubernetes.io/version: "1.0.6"
+    app.kubernetes.io/version: "1.0.7"
     app.kubernetes.io/managed-by: Helm
 rules:
   # Read
@@ -250,10 +250,10 @@ metadata:
   name: karpenter-lease
   namespace: kube-node-lease
   labels:
-    helm.sh/chart: karpenter-1.0.6
+    helm.sh/chart: karpenter-1.0.7
     app.kubernetes.io/name: karpenter
     app.kubernetes.io/instance: karpenter
-    app.kubernetes.io/version: "1.0.6"
+    app.kubernetes.io/version: "1.0.7"
     app.kubernetes.io/managed-by: Helm
 rules:
   # Read
@@ -270,12 +270,12 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: karpenter
-  namespace: kube-system
+  namespace: karpenter
   labels:
-    helm.sh/chart: karpenter-1.0.6
+    helm.sh/chart: karpenter-1.0.7
     app.kubernetes.io/name: karpenter
     app.kubernetes.io/instance: karpenter
-    app.kubernetes.io/version: "1.0.6"
+    app.kubernetes.io/version: "1.0.7"
     app.kubernetes.io/managed-by: Helm
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -284,7 +284,7 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: karpenter
-    namespace: kube-system
+    namespace: karpenter
 ---
 # Source: karpenter/templates/rolebinding.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -293,10 +293,10 @@ metadata:
   name: karpenter-dns
   namespace: kube-system
   labels:
-    helm.sh/chart: karpenter-1.0.6
+    helm.sh/chart: karpenter-1.0.7
     app.kubernetes.io/name: karpenter
     app.kubernetes.io/instance: karpenter
-    app.kubernetes.io/version: "1.0.6"
+    app.kubernetes.io/version: "1.0.7"
     app.kubernetes.io/managed-by: Helm
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -305,7 +305,7 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: karpenter
-    namespace: kube-system
+    namespace: karpenter
 ---
 # Source: karpenter/templates/rolebinding.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -314,10 +314,10 @@ metadata:
   name: karpenter-lease
   namespace: kube-node-lease
   labels:
-    helm.sh/chart: karpenter-1.0.6
+    helm.sh/chart: karpenter-1.0.7
     app.kubernetes.io/name: karpenter
     app.kubernetes.io/instance: karpenter
-    app.kubernetes.io/version: "1.0.6"
+    app.kubernetes.io/version: "1.0.7"
     app.kubernetes.io/managed-by: Helm
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -326,19 +326,19 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: karpenter
-    namespace: kube-system
+    namespace: karpenter
 ---
 # Source: karpenter/templates/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
   name: karpenter
-  namespace: kube-system
+  namespace: karpenter
   labels:
-    helm.sh/chart: karpenter-1.0.6
+    helm.sh/chart: karpenter-1.0.7
     app.kubernetes.io/name: karpenter
     app.kubernetes.io/instance: karpenter
-    app.kubernetes.io/version: "1.0.6"
+    app.kubernetes.io/version: "1.0.7"
     app.kubernetes.io/managed-by: Helm
 spec:
   type: ClusterIP
@@ -364,15 +364,15 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: karpenter
-  namespace: kube-system
+  namespace: karpenter
   labels:
-    helm.sh/chart: karpenter-1.0.6
+    helm.sh/chart: karpenter-1.0.7
     app.kubernetes.io/name: karpenter
     app.kubernetes.io/instance: karpenter
-    app.kubernetes.io/version: "1.0.6"
+    app.kubernetes.io/version: "1.0.7"
     app.kubernetes.io/managed-by: Helm
 spec:
-  replicas: 1
+  replicas: 2
   revisionHistoryLimit: 10
   strategy:
     rollingUpdate:
@@ -406,7 +406,7 @@ spec:
               drop:
                 - ALL
             readOnlyRootFilesystem: true
-          image: public.ecr.aws/karpenter/controller:1.0.6@sha256:25ec56d5bc718b213a648c0c64360a3be7fbe885b79905c73b77f68295352e9b
+          image: public.ecr.aws/karpenter/controller:1.0.7@sha256:1c64c64ec89b7d33c93558d24f3c7a26b6176869ac11182b870fe9edb5c033ce
           imagePullPolicy: IfNotPresent
           env:
             - name: KUBERNETES_MIN_VERSION
@@ -446,7 +446,7 @@ spec:
             - name: BATCH_IDLE_DURATION
               value: "1s"
             - name: CLUSTER_NAME
-              value: "kkamji-eks"
+              value: "kkamji"
             - name: VM_MEMORY_OVERHEAD_PERCENT
               value: "0.075"
             - name: RESERVED_ENIS
@@ -493,10 +493,6 @@ spec:
             - matchExpressions:
               - key: karpenter.sh/nodepool
                 operator: DoesNotExist
-              - key: eks.amazonaws.com/nodegroup
-                operator: In
-                values:
-                - kkamji_eks_nodes-20241030211456858600000001
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
           - labelSelector:
