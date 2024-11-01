@@ -26,6 +26,32 @@ Terraform을 통한 AWS Infra 프로비저닝
 - [x] WAF 구성
 - [x] Monitoring -> CloudWatch Container Insight
 
+## Helm Chart - helm-kkamji-app
+
+```bash
+cd helm-kkamji-app
+
+helm install kkamji-app . -n helm-managed-kkamji-app --create-namespace \
+  --set mysql.auth.username={user_name} \
+  --set mysql.auth.password={user_password} \
+  --set mysql.auth.database={database_name} \
+  --set mysql.storage.storageClass={storageclass_name}
+
+## mysql.storage.storageClass를 미지정 했을시 gp3라는 이름의 storage class가 존재해야함
+```
+
+##TODO ArgoCD 구성 이미지
+
+##TODO Monitoring
+
+##TODO WAF
+
+##TODO 부하테스트 - karpenter 노드 프로비저닝 확인
+
+## Secrets 관리
+
+![alt text](docs/secret.png)
+
 ## 파일 디렉토리 구조
 
 ```bash
@@ -119,3 +145,4 @@ Terraform을 통한 AWS Infra 프로비저닝
 │   ├── terraform.tfstate
 │   └── versions.tf
 ```
+
