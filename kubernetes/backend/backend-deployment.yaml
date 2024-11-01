@@ -18,10 +18,13 @@ spec:
       containers:
       - image: 376129852049.dkr.ecr.ap-northeast-2.amazonaws.com/kkamji-app-backend:latest
         name: backend
+        env:
+        - name: USE_AWS_SECRETS
+          value: "true"
         resources:
           requests:
             cpu: "125m"
-            memory: "256Mi"
+            memory: "512Mi"
           limits:
             cpu: "250m"
-            memory: "512Mi"
+            memory: "1Gi"
